@@ -39,12 +39,6 @@ export function NavigationRadar({ className = "" }: { className?: string }) {
           <stop offset="100%" stopColor="#03232D" stopOpacity="0.95" />
         </radialGradient>
 
-        {/* Radar sweep trail (fading wedge) */}
-        <linearGradient id="nr-sweep-trail" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#E8B94F" stopOpacity="0.75" />
-          <stop offset="100%" stopColor="#E8B94F" stopOpacity="0" />
-        </linearGradient>
-
         {/* Radar center glow */}
         <radialGradient id="nr-radar-glow" cx="50%" cy="50%" r="50%">
           <stop offset="0%" stopColor="#087F86" stopOpacity="0.55" />
@@ -243,25 +237,20 @@ export function NavigationRadar({ className = "" }: { className?: string }) {
         <text x="0" y="172" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="12" fill="#087F86" letterSpacing="0.1em">180</text>
         <text x="-166" y="5" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="12" fill="#087F86" letterSpacing="0.1em">270</text>
 
-        {/* ===== Ping rings (animate-radar-ping) ===== */}
-        <circle r="40" fill="none" stroke="#E8B94F" strokeWidth="1.5" opacity="0.6" className="animate-radar-ping" style={{ animationDelay: "0s" }} />
-        <circle r="40" fill="none" stroke="#E8B94F" strokeWidth="1.5" opacity="0.6" className="animate-radar-ping" style={{ animationDelay: "1s" }} />
-        <circle r="40" fill="none" stroke="#E8B94F" strokeWidth="1.5" opacity="0.6" className="animate-radar-ping" style={{ animationDelay: "2s" }} />
+        {/* ===== Radar waves emanating from the center (animate-radar-ping) =====
+            Multiple small concentric ping rings, staggered so a new wave
+            leaves the center every ~0.6s — a continuous sonar-like ripple
+            radiating outward to the edge of the scope. */}
+        <circle r="22" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.7" className="animate-radar-ping" style={{ animationDelay: "0s" }} />
+        <circle r="22" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.7" className="animate-radar-ping" style={{ animationDelay: "0.6s" }} />
+        <circle r="22" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.7" className="animate-radar-ping" style={{ animationDelay: "1.2s" }} />
+        <circle r="22" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.7" className="animate-radar-ping" style={{ animationDelay: "1.8s" }} />
+        <circle r="22" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.7" className="animate-radar-ping" style={{ animationDelay: "2.4s" }} />
 
-        {/* ===== Sweeping scan line + trail wedge (animate-radar-sweep) ===== */}
-        <g className="animate-radar-sweep">
-          {/* Trail wedge — fading sector behind the sweep line */}
-          <path
-            d="M 0 0 L 180 0 A 180 180 0 0 0 127.3 -127.3 Z"
-            fill="url(#nr-sweep-trail)"
-            opacity="0.6"
-          />
-          {/* Sweep line */}
-          <line x1="0" y1="0" x2="180" y2="0" stroke="#FFE8A8" strokeWidth="2" strokeLinecap="round" />
-          {/* Leading-edge blip */}
-          <circle cx="180" cy="0" r="3.5" fill="#FFFFFF" />
-          <circle cx="180" cy="0" r="6" fill="#E8B94F" opacity="0.4" />
-        </g>
+        {/* Secondary set of slightly larger waves for visual layering */}
+        <circle r="50" fill="none" stroke="#087F86" strokeWidth="1" opacity="0.5" className="animate-radar-ping" style={{ animationDelay: "0.3s" }} />
+        <circle r="50" fill="none" stroke="#087F86" strokeWidth="1" opacity="0.5" className="animate-radar-ping" style={{ animationDelay: "1.5s" }} />
+        <circle r="50" fill="none" stroke="#087F86" strokeWidth="1" opacity="0.5" className="animate-radar-ping" style={{ animationDelay: "2.7s" }} />
 
         {/* ===== Vessel blip being tracked (NE quadrant) ===== */}
         <g transform="translate(95 -75)">
