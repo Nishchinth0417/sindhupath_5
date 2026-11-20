@@ -185,11 +185,13 @@
   transform-box: fill-box;
 }
 
-/* Radar ping — expanding concentric rings emanating from the scope center */
+/* Radar ping — small concentric waves forming from the center of the scope
+   and expanding outward. Starts as a tiny point at the center (scale 0.08),
+   grows to a modest size, and fades out before reaching the scope edge. */
 @keyframes sp-radar-ping {
-  0%   { transform: scale(0.25); opacity: 0.95; }
-  70%  { opacity: 0.2; }
-  100% { transform: scale(2.6); opacity: 0; }
+  0%   { transform: scale(0.08); opacity: 0.95; }
+  60%  { opacity: 0.35; }
+  100% { transform: scale(1.8); opacity: 0; }
 }
 .animate-radar-ping {
   animation: sp-radar-ping 3s ease-out infinite;

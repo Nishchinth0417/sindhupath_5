@@ -237,20 +237,13 @@ export function NavigationRadar({ className = "" }: { className?: string }) {
         <text x="0" y="172" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="12" fill="#087F86" letterSpacing="0.1em">180</text>
         <text x="-166" y="5" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="12" fill="#087F86" letterSpacing="0.1em">270</text>
 
-        {/* ===== Radar waves emanating from the center (animate-radar-ping) =====
-            Multiple small concentric ping rings, staggered so a new wave
-            leaves the center every ~0.6s — a continuous sonar-like ripple
-            radiating outward to the edge of the scope. */}
-        <circle r="22" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.7" className="animate-radar-ping" style={{ animationDelay: "0s" }} />
-        <circle r="22" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.7" className="animate-radar-ping" style={{ animationDelay: "0.6s" }} />
-        <circle r="22" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.7" className="animate-radar-ping" style={{ animationDelay: "1.2s" }} />
-        <circle r="22" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.7" className="animate-radar-ping" style={{ animationDelay: "1.8s" }} />
-        <circle r="22" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.7" className="animate-radar-ping" style={{ animationDelay: "2.4s" }} />
-
-        {/* Secondary set of slightly larger waves for visual layering */}
-        <circle r="50" fill="none" stroke="#087F86" strokeWidth="1" opacity="0.5" className="animate-radar-ping" style={{ animationDelay: "0.3s" }} />
-        <circle r="50" fill="none" stroke="#087F86" strokeWidth="1" opacity="0.5" className="animate-radar-ping" style={{ animationDelay: "1.5s" }} />
-        <circle r="50" fill="none" stroke="#087F86" strokeWidth="1" opacity="0.5" className="animate-radar-ping" style={{ animationDelay: "2.7s" }} />
+        {/* ===== Small radar waves forming from the center =====
+            Three clean ping rings, staggered every 1s, that originate as a
+            tiny point at the center and ripple outward — a small, continuous
+            sonar-like animation that stays in the inner portion of the scope. */}
+        <circle r="35" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.85" className="animate-radar-ping" style={{ animationDelay: "0s" }} />
+        <circle r="35" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.85" className="animate-radar-ping" style={{ animationDelay: "1s" }} />
+        <circle r="35" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.85" className="animate-radar-ping" style={{ animationDelay: "2s" }} />
 
         {/* ===== Vessel blip being tracked (NE quadrant) ===== */}
         <g transform="translate(95 -75)">
