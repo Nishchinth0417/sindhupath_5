@@ -89,6 +89,9 @@ export const metadata: Metadata = {
       "Merit-based Merchant Navy coaching. Mentored by active Master Mariners and Chief Engineers.",
     images: ["/sindhupath-logo.png"],
   },
+  verification: {
+    google: "tFFKSsRFISMGKQGlfqWeZE-EODouuUmp6leIVcgfHBk",
+  },
   category: "education",
   other: {
     "theme-color": "#071322",
@@ -150,6 +153,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta
+          name="google-site-verification"
+          content="tFFKSsRFISMGKQGlfqWeZE-EODouuUmp6leIVcgfHBk"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
