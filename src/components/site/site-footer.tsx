@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Linkedin, Instagram, Mail, MessageCircle, ExternalLink } from "lucide-react";
 import { LogoMark } from "./logo-mark";
+import { CompassRose } from "./compass-rose";
 import { SINDHUPATH_CONFIG } from "@/lib/site-config";
 
 export function SiteFooter() {
@@ -95,6 +96,23 @@ export function SiteFooter() {
               merchant-navy-academy.sindhupath.com
               <ExternalLink className="h-3.5 w-3.5 cta-arrow" aria-hidden="true" />
             </a>
+          </div>
+        </div>
+
+        {/* ===== Compass rose — end-of-page navigational instrument ===== */}
+        <div className="mt-14 sm:mt-16 pt-10 border-t border-white/10">
+          <div className="flex flex-col items-center text-center gap-5">
+            <div className="w-[220px] sm:w-[260px]">
+              <CompassRose className="w-full h-auto" />
+            </div>
+            <div className="max-w-md">
+              <p className="font-display text-2xl sm:text-3xl tracking-wide text-white leading-tight">
+                Navigate by Knowledge. Steer by Discipline.
+              </p>
+              <p className="mt-2 font-subhead uppercase tracking-[0.22em] text-[11px] text-[#E8B94F]">
+                {SINDHUPATH_CONFIG.motto}
+              </p>
+            </div>
           </div>
         </div>
 

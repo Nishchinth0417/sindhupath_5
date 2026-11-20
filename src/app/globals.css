@@ -185,16 +185,21 @@
   transform-box: fill-box;
 }
 
-/* Radar ping — small concentric waves forming from the center of the scope
-   and expanding outward. Starts as a tiny point at the center (scale 0.08),
-   grows to a modest size, and fades out before reaching the scope edge. */
+/* Radar ping — waves form from the center as a tiny dot, expand outward,
+   and slowly fade as they reach the scope boundary (r≈186).
+   Base circle r=90, so scale 0.05→2.07 covers ~4.5px → ~186px (exactly
+   at the boundary). Opacity is held higher through the journey so the wave
+   stays visible all the way out, then rapidly fades right at the rim. */
 @keyframes sp-radar-ping {
-  0%   { transform: scale(0.08); opacity: 0.95; }
-  60%  { opacity: 0.35; }
-  100% { transform: scale(1.8); opacity: 0; }
+  0%   { transform: scale(0.05); opacity: 0.9; }
+  25%  { opacity: 0.75; }
+  55%  { opacity: 0.55; }
+  80%  { opacity: 0.3; }
+  95%  { opacity: 0.1; }
+  100% { transform: scale(2.07); opacity: 0; }
 }
 .animate-radar-ping {
-  animation: sp-radar-ping 3s ease-out infinite;
+  animation: sp-radar-ping 4.5s ease-out infinite;
   transform-origin: center;
   transform-box: fill-box;
 }

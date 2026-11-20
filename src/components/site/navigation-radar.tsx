@@ -1,16 +1,14 @@
 /**
- * NavigationRadar — Inline SVG hero visual featuring two animated instruments:
+ * NavigationRadar — Inline SVG hero visual featuring a single naval RADAR SCOPE:
  *
- *  1. A naval RADAR SCOPE on the right with:
- *     - Concentric range rings + crosshairs
- *     - A rotating sweep line + fading trail wedge (animate-radar-sweep)
- *     - Expanding ping rings from the center (animate-radar-ping)
- *     - A vessel blip being tracked on the scope
+ *  - Outer bezel ring + radial scope background
+ *  - Concentric range rings + crosshairs (45° diagonals)
+ *  - Bearing ticks every 15° + cardinal bearing labels (000/090/180/270)
+ *  - Radar waves forming from the center (animate-radar-ping) — waves expand
+ *    outward and slowly fade as they reach the scope boundary
+ *  - Two vessel contacts being tracked on the scope (VESS-01, CTC-02)
  *
- *  2. A COMPASS ROSE on the left with:
- *     - Cardinal/intercardinal ticks
- *     - An outer rose ring slowly rotating (animate-compass-spin)
- *     - A needle wobbling as it finds north (animate-compass-needle)
+ * The compass has been relocated to the footer (see compass-rose.tsx).
  *
  * Pure inline SVG + CSS keyframe animations (no Canvas, no Lottie).
  * Honors prefers-reduced-motion via globals.css overrides.
@@ -18,10 +16,10 @@
 export function NavigationRadar({ className = "" }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 720 620"
+      viewBox="0 0 640 620"
       className={className}
       role="img"
-      aria-label="Naval navigation instruments: a sweeping radar scope tracking a vessel, beside a compass rose with a wobbling needle finding north."
+      aria-label="Naval navigation radar scope with waves emanating from the center and slowly fading toward the boundary, tracking two vessel contacts."
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
@@ -44,152 +42,41 @@ export function NavigationRadar({ className = "" }: { className?: string }) {
           <stop offset="0%" stopColor="#087F86" stopOpacity="0.55" />
           <stop offset="100%" stopColor="#087F86" stopOpacity="0" />
         </radialGradient>
-
-        {/* Compass glow */}
-        <radialGradient id="nr-compass-glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#E8B94F" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="#E8B94F" stopOpacity="0" />
-        </radialGradient>
-
-        {/* Needle gradients */}
-        <linearGradient id="nr-needle-north" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#FFE8A8" />
-          <stop offset="100%" stopColor="#E8B94F" />
-        </linearGradient>
-        <linearGradient id="nr-needle-south" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#087F86" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#0B2345" stopOpacity="0.9" />
-        </linearGradient>
       </defs>
 
       {/* ===== Background sky wash ===== */}
-      <rect x="0" y="0" width="720" height="620" fill="url(#nr-sky)" />
+      <rect x="0" y="0" width="640" height="620" fill="url(#nr-sky)" />
 
       {/* ===== Constellation stars (upper sky) ===== */}
       <g fill="#E8B94F" opacity="0.7">
-        <circle cx="80" cy="50" r="1.5" />
-        <circle cx="180" cy="30" r="1" />
-        <circle cx="280" cy="70" r="1.5" />
+        <circle cx="60" cy="50" r="1.5" />
+        <circle cx="160" cy="30" r="1" />
+        <circle cx="260" cy="70" r="1.5" />
         <circle cx="380" cy="40" r="1" />
         <circle cx="480" cy="80" r="1.5" opacity="0.6" />
         <circle cx="580" cy="30" r="1" />
-        <circle cx="640" cy="60" r="1" opacity="0.6" />
-        <circle cx="220" cy="120" r="1" opacity="0.5" />
-        <circle cx="500" cy="140" r="1" opacity="0.5" />
+        <circle cx="100" cy="120" r="1" opacity="0.5" />
+        <circle cx="540" cy="140" r="1" opacity="0.5" />
       </g>
       {/* Faint constellation lines */}
       <g stroke="#E8B94F" strokeWidth="0.4" opacity="0.2" fill="none">
-        <path d="M 80 50 L 180 30 L 280 70" />
-        <path d="M 480 80 L 580 30 L 640 60" />
+        <path d="M 60 50 L 160 30 L 260 70" />
+        <path d="M 380 40 L 480 80 L 580 30" />
       </g>
 
       {/* ===== Distant horizon grid ===== */}
       <g stroke="#087F86" strokeWidth="0.5" opacity="0.18">
-        <line x1="0" y1="170" x2="720" y2="170" />
-        <line x1="0" y1="200" x2="720" y2="200" />
+        <line x1="0" y1="170" x2="640" y2="170" />
+        <line x1="0" y1="200" x2="640" y2="200" />
       </g>
 
       {/* ====================================================================== */}
-      {/* COMPASS ROSE — left side                                                */}
-      {/* ====================================================================== */}
-      {/* Compass glow halo */}
-      <circle cx="160" cy="420" r="150" fill="url(#nr-compass-glow)" />
-
-      <g transform="translate(160 420)">
-        {/* Outermost fixed ring (boundary) */}
-        <circle r="118" fill="none" stroke="#087F86" strokeWidth="0.75" opacity="0.35" />
-
-        {/* Outer rotating rose ring (slowly spins) */}
-        <g className="animate-compass-spin">
-          {/* Tick marks around the ring — 24 ticks every 15° */}
-          <g stroke="#087F86" strokeWidth="1" opacity="0.7">
-            {Array.from({ length: 24 }).map((_, i) => {
-              const angle = (i * 15 * Math.PI) / 180;
-              const isMajor = i % 6 === 0; // every 90°
-              const isMid = i % 3 === 0;   // every 45°
-              const innerR = isMajor ? 100 : isMid ? 105 : 110;
-              const outerR = 116;
-              return (
-                <line
-                  key={i}
-                  x1={Math.cos(angle) * innerR}
-                  y1={Math.sin(angle) * innerR}
-                  x2={Math.cos(angle) * outerR}
-                  y2={Math.sin(angle) * outerR}
-                  strokeWidth={isMajor ? 1.5 : isMid ? 1 : 0.5}
-                />
-              );
-            })}
-          </g>
-
-          {/* Cardinal letters */}
-          <text x="0" y="-92" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="16" fill="#E8B94F" letterSpacing="0.1em">N</text>
-          <text x="92" y="5" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="13" fill="#087F86" letterSpacing="0.1em">E</text>
-          <text x="0" y="98" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="13" fill="#087F86" letterSpacing="0.1em">S</text>
-          <text x="-92" y="5" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="13" fill="#087F86" letterSpacing="0.1em">W</text>
-
-          {/* Intercardinal markers (small) */}
-          <text x="65" y="-65" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="9" fill="#087F86" opacity="0.6">NE</text>
-          <text x="65" y="70" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="9" fill="#087F86" opacity="0.6">SE</text>
-          <text x="-65" y="70" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="9" fill="#087F86" opacity="0.6">SW</text>
-          <text x="-65" y="-65" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="9" fill="#087F86" opacity="0.6">NW</text>
-
-          {/* Inner compass ring */}
-          <circle r="86" fill="none" stroke="#087F86" strokeWidth="0.6" opacity="0.5" />
-          <circle r="70" fill="none" stroke="#087F86" strokeWidth="0.4" opacity="0.35" />
-
-          {/* Compass rose star (8-point star, decorative) */}
-          <g opacity="0.55">
-            <polygon
-              points="0,-86 8,-8 86,0 8,8 0,86 -8,8 -86,0 -8,-8"
-              fill="#087F86"
-              opacity="0.18"
-            />
-            <polygon
-              points="0,-86 6,-12 60,-60 12,-6 0,0 -12,-6 -60,-60 -6,-12"
-              fill="#0B2345"
-              opacity="0.4"
-            />
-          </g>
-        </g>
-
-        {/* Needle (wobbling, layered above the rotating ring) */}
-        <g className="animate-compass-needle">
-          {/* North pointer (gold) */}
-          <polygon
-            points="0,-80 -7,0 0,8 7,0"
-            fill="url(#nr-needle-north)"
-            stroke="#7A560D"
-            strokeWidth="0.6"
-          />
-          {/* South pointer (teal) */}
-          <polygon
-            points="0,80 -7,0 0,-8 7,0"
-            fill="url(#nr-needle-south)"
-            stroke="#087F86"
-            strokeWidth="0.4"
-          />
-          {/* N marker triangle above needle */}
-          <polygon points="0,-80 -4,-72 4,-72" fill="#FFE8A8" />
-
-          {/* Center pivot */}
-          <circle r="6" fill="#0B2345" stroke="#E8B94F" strokeWidth="1.2" />
-          <circle r="2" fill="#E8B94F" />
-        </g>
-
-        {/* Compass label */}
-        <text x="0" y="-130" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="14" fill="#087F86" letterSpacing="0.28em" opacity="0.8">
-          GYRO COMPASS
-        </text>
-      </g>
-
-      {/* ====================================================================== */}
-      {/* RADAR SCOPE — right side                                               */}
+      {/* RADAR SCOPE — centered                                                  */}
       {/* ====================================================================== */}
       {/* Radar glow halo */}
-      <circle cx="520" cy="350" r="240" fill="url(#nr-radar-glow)" />
+      <circle cx="320" cy="340" r="240" fill="url(#nr-radar-glow)" />
 
-      <g transform="translate(520 350)">
+      <g transform="translate(320 340)">
         {/* Outer bezel ring */}
         <circle r="200" fill="#0B2345" stroke="#087F86" strokeWidth="2" />
         <circle r="194" fill="none" stroke="#087F86" strokeWidth="0.5" opacity="0.4" />
@@ -237,13 +124,15 @@ export function NavigationRadar({ className = "" }: { className?: string }) {
         <text x="0" y="172" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="12" fill="#087F86" letterSpacing="0.1em">180</text>
         <text x="-166" y="5" textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize="12" fill="#087F86" letterSpacing="0.1em">270</text>
 
-        {/* ===== Small radar waves forming from the center =====
-            Three clean ping rings, staggered every 1s, that originate as a
-            tiny point at the center and ripple outward — a small, continuous
-            sonar-like animation that stays in the inner portion of the scope. */}
-        <circle r="35" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.85" className="animate-radar-ping" style={{ animationDelay: "0s" }} />
-        <circle r="35" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.85" className="animate-radar-ping" style={{ animationDelay: "1s" }} />
-        <circle r="35" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.85" className="animate-radar-ping" style={{ animationDelay: "2s" }} />
+        {/* ===== Radar waves forming from the center =====
+            Three ping rings (base r=90), staggered every ~1.3s, that form as a
+            tiny dot at the center and slowly expand outward — fading as they
+            reach the scope boundary (r≈186). Base r=90 × scale 2.1 = ~189px,
+            so waves dissipate right at the rim. Duration 4s gives a slow,
+            stately sonar-like ripple. */}
+        <circle r="90" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.85" className="animate-radar-ping" style={{ animationDelay: "0s" }} />
+        <circle r="90" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.85" className="animate-radar-ping" style={{ animationDelay: "1.3s" }} />
+        <circle r="90" fill="none" stroke="#E8B94F" strokeWidth="1.4" opacity="0.85" className="animate-radar-ping" style={{ animationDelay: "2.6s" }} />
 
         {/* ===== Vessel blip being tracked (NE quadrant) ===== */}
         <g transform="translate(95 -75)">
@@ -276,11 +165,6 @@ export function NavigationRadar({ className = "" }: { className?: string }) {
         <text x="0" y="-205" textAnchor="middle" fontFamily="var(--font-montserrat), sans-serif" fontSize="9" fill="#087F86" opacity="0.6" letterSpacing="0.18em">
           X-BAND · 9.4 GHz
         </text>
-      </g>
-
-      {/* ===== Decorative connector line between compass & radar ===== */}
-      <g opacity="0.3">
-        <line x1="280" y1="420" x2="320" y2="380" stroke="#087F86" strokeWidth="0.5" strokeDasharray="2 4" />
       </g>
     </svg>
   );
