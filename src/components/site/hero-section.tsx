@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ArrowUpRight, MessageCircle, Compass, Anchor } from "lucide-react";
-import { IsometricVessel } from "./isometric-vessel";
+import { ArrowUpRight, MessageCircle, Compass, Radar } from "lucide-react";
+import { NavigationRadar } from "./navigation-radar";
 import { SINDHUPATH_CONFIG } from "@/lib/site-config";
 
 export function HeroSection() {
@@ -9,10 +9,10 @@ export function HeroSection() {
       id="top"
       className="relative overflow-hidden bg-[#071322] text-white pt-28 sm:pt-32 lg:pt-36 pb-16 sm:pb-20"
     >
-      {/* Aurora backdrop */}
+      {/* Static atmospheric backdrop (replaces former aurora animation) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 animate-aurora"
+        className="pointer-events-none absolute inset-0"
         style={{
           background:
             "radial-gradient(60% 50% at 25% 10%, rgba(8,127,134,0.22) 0%, transparent 60%), radial-gradient(50% 40% at 80% 30%, rgba(232,185,79,0.12) 0%, transparent 60%), radial-gradient(70% 60% at 60% 90%, rgba(11,35,69,0.6) 0%, transparent 70%)",
@@ -93,11 +93,11 @@ export function HeroSection() {
           {/* Visual column */}
           <div className="lg:col-span-5 relative">
             <div className="relative">
-              <IsometricVessel className="w-full h-auto" />
+              <NavigationRadar className="w-full h-auto" />
             </div>
             {/* Spec card — placed below the SVG, no overlap */}
             <div className="mt-4 sm:mt-5 flex items-center gap-3 bg-[#0B2345]/95 backdrop-blur-sm border border-[#087F86]/30 rounded-lg px-4 py-3 shadow-xl">
-              <Anchor className="h-5 w-5 text-[#E8B94F] shrink-0" aria-hidden="true" />
+              <Radar className="h-5 w-5 text-[#E8B94F] shrink-0" aria-hidden="true" />
               <div className="min-w-0">
                 <div className="font-subhead uppercase tracking-[0.14em] text-[10px] text-[#087F86]">
                   Verified Course Pathway

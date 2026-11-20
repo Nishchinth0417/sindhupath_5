@@ -44,7 +44,7 @@ export function ReadinessStack({ className = "" }: { className?: string }) {
         </radialGradient>
       </defs>
 
-      {/* Connecting gold route between tiers */}
+      {/* Connecting gold route between tiers (static dashed line) */}
       <path
         d="M 130 470 L 290 410 L 450 350 L 600 290"
         fill="none"
@@ -52,8 +52,21 @@ export function ReadinessStack({ className = "" }: { className?: string }) {
         strokeWidth="2"
         strokeDasharray="6 6"
         opacity="0.7"
-        className="animate-route-dash"
       />
+
+      {/* Radar pings on the route waypoints (tier transitions) */}
+      <g transform="translate(130 470)">
+        <circle r="10" fill="none" stroke="#E8B94F" strokeWidth="1.2" opacity="0.6" className="animate-radar-ping" style={{ animationDelay: "0s" }} />
+        <circle r="3" fill="#E8B94F" />
+      </g>
+      <g transform="translate(290 410)">
+        <circle r="10" fill="none" stroke="#E8B94F" strokeWidth="1.2" opacity="0.6" className="animate-radar-ping" style={{ animationDelay: "0.6s" }} />
+        <circle r="3" fill="#E8B94F" />
+      </g>
+      <g transform="translate(450 350)">
+        <circle r="10" fill="none" stroke="#E8B94F" strokeWidth="1.2" opacity="0.6" className="animate-radar-ping" style={{ animationDelay: "1.2s" }} />
+        <circle r="3" fill="#E8B94F" />
+      </g>
 
       {/* TIER 01 — FOUNDATION (chart table) */}
       <TierBlock x={40} y={410} kind="foundation" tier="01" title="FOUNDATION" caption="10+2 PCM · DG Shipping Medical" />
@@ -162,8 +175,9 @@ function TierMotif({ kind, x, y, w }: { kind: TierKind; x: number; y: number; w:
         <line x1={cx - 18} y1={y - 2} x2={cx - 4} y2={y - 2} stroke="#E8B94F" strokeWidth="1.5" />
         <line x1={cx - 18} y1={y + 4} x2={cx + 8} y2={y + 4} stroke="#087F86" strokeWidth="1.5" />
         <line x1={cx - 18} y1={y + 10} x2={cx} y2={y + 10} stroke="#DCEFED" strokeWidth="1.5" />
-        {/* progress dot */}
-        <circle cx={cx + 14} cy={y + 4} r="2" fill="#E8B94F" className="animate-beacon-core" />
+        {/* progress dot — radar ping */}
+        <circle cx={cx + 14} cy={y + 4} r="2" fill="#E8B94F" />
+        <circle cx={cx + 14} cy={y + 4} r="6" fill="none" stroke="#E8B94F" strokeWidth="0.8" opacity="0.5" className="animate-radar-ping" />
       </g>
     );
   }
@@ -172,17 +186,19 @@ function TierMotif({ kind, x, y, w }: { kind: TierKind; x: number; y: number; w:
     // ship's bridge panel — wheel + radar
     return (
       <g style={top}>
-        {/* radar console */}
-        <rect x={cx - 22} y={y - 6} width={44} height={26} rx="2" fill="#0B2345" stroke="#E8B94F" strokeWidth="0.75" />
-        {/* radar sweep */}
-        <g transform={`translate(${cx} ${y + 6})`}>
-          <circle r="10" fill="none" stroke="#087F86" strokeWidth="0.75" opacity="0.6" />
-          <circle r="6" fill="none" stroke="#087F86" strokeWidth="0.5" opacity="0.4" />
-          <path d="M 0 0 L 10 0 A 10 10 0 0 1 5 8.66 Z" fill="#E8B94F" opacity="0.7" className="animate-radar-sweep" />
-        </g>
-        {/* wheel spokes */}
-        <line x1={cx - 14} y1={y + 24} x2={cx + 14} y2={y + 24} stroke="#E8B94F" strokeWidth="1" />
-        <circle cx={cx} cy={y + 24} r="2" fill="#E8B94F" />
+      {/* radar console */}
+      <rect x={cx - 22} y={y - 6} width={44} height={26} rx="2" fill="#0B2345" stroke="#E8B94F" strokeWidth="0.75" />
+      {/* radar sweep — rotating sector */}
+      <g transform={`translate(${cx} ${y + 6})`}>
+        <circle r="10" fill="none" stroke="#087F86" strokeWidth="0.75" opacity="0.6" />
+        <circle r="6" fill="none" stroke="#087F86" strokeWidth="0.5" opacity="0.4" />
+        <path d="M 0 0 L 10 0 A 10 10 0 0 1 5 8.66 Z" fill="#E8B94F" opacity="0.7" className="animate-radar-sweep" />
+      </g>
+      {/* compass needle — wobbling below the console */}
+      <g transform={`translate(${cx} ${y + 24})`}>
+        <polygon points="0,-7 -1.5,0 0,1 1.5,0" fill="#E8B94F" className="animate-compass-needle" />
+        <circle r="1.5" fill="#E8B94F" />
+      </g>
       </g>
     );
   }
@@ -195,8 +211,9 @@ function TierMotif({ kind, x, y, w }: { kind: TierKind; x: number; y: number; w:
       <polygon points={`${x + 14},${y + 16} ${x + 22},${y + 24} ${x + 22},${y + 26} ${x + 14},${y + 18}`} fill="#7A560D" />
       {/* gangway */}
       <line x1={x + 4} y1={y + 22} x2={x + 22} y2={y + 18} stroke="#087F86" strokeWidth="1.5" strokeDasharray="2 2" />
-      {/* beacon at gangway end */}
-      <circle cx={x + 22} cy={y + 16} r="3" fill="#E8B94F" className="animate-beacon-core" />
+      {/* beacon at gangway end — radar ping */}
+      <circle cx={x + 22} cy={y + 16} r="3" fill="#E8B94F" />
+      <circle cx={x + 22} cy={y + 16} r="8" fill="none" stroke="#E8B94F" strokeWidth="0.8" opacity="0.5" className="animate-radar-ping" />
     </g>
   );
 }

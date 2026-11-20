@@ -166,49 +166,15 @@
 }
 
 /* ============================================================================
-   SINDHUPATH ANIMATIONS — transform/opacity only (GPU-friendly)
+   SINDHUPATH ANIMATIONS — Radar + Compass system
+   Only @keyframe animations on the marketing site: a naval radar sweep
+   with ping rings, and a compass needle wobble + slow rose rotation.
+   All animations use transform/opacity only (GPU-friendly).
    ========================================================================== */
 
-/* Vessel gentle float on the isometric sea */
-@keyframes sp-vessel-float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50%      { transform: translateY(-4px) rotate(0.5deg); }
-}
-.animate-vessel-float {
-  animation: sp-vessel-float 6s ease-in-out infinite;
-  transform-origin: center;
-  transform-box: fill-box;
-}
+/* --- RADAR ANIMATION ------------------------------------------------------- */
 
-/* Dashed navigational route drawing loop */
-@keyframes sp-route-dash {
-  0%   { stroke-dashoffset: 0; }
-  100% { stroke-dashoffset: -200; }
-}
-.animate-route-dash {
-  animation: sp-route-dash 4s linear infinite;
-}
-
-/* Harbor beacon pulse — radial ripples */
-@keyframes sp-beacon-pulse {
-  0%   { transform: scale(0.6); opacity: 0.9; }
-  70%  { opacity: 0.15; }
-  100% { transform: scale(2.2); opacity: 0; }
-}
-.animate-beacon-pulse {
-  animation: sp-beacon-pulse 2.8s ease-out infinite;
-  transform-origin: center;
-  transform-box: fill-box;
-}
-@keyframes sp-beacon-core {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.55; }
-}
-.animate-beacon-core {
-  animation: sp-beacon-core 1.8s ease-in-out infinite;
-}
-
-/* Radar ping sweep for technical badges */
+/* Radar sweep — 360° rotating scan line + fading trail wedge */
 @keyframes sp-radar-sweep {
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -218,6 +184,47 @@
   transform-origin: center;
   transform-box: fill-box;
 }
+
+/* Radar ping — expanding concentric rings emanating from the scope center */
+@keyframes sp-radar-ping {
+  0%   { transform: scale(0.25); opacity: 0.95; }
+  70%  { opacity: 0.2; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+.animate-radar-ping {
+  animation: sp-radar-ping 3s ease-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+/* --- COMPASS ANIMATION ----------------------------------------------------- */
+
+/* Compass needle — slow wobble as it hunts for true north */
+@keyframes sp-compass-needle {
+  0%   { transform: rotate(-7deg); }
+  25%  { transform: rotate(6deg); }
+  50%  { transform: rotate(-3deg); }
+  75%  { transform: rotate(4deg); }
+  100% { transform: rotate(-7deg); }
+}
+.animate-compass-needle {
+  animation: sp-compass-needle 7s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+/* Compass rose — slow continuous rotation of the outer rose ring */
+@keyframes sp-compass-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.animate-compass-spin {
+  animation: sp-compass-spin 32s linear infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+/* --- Hover micro-interactions (transitions, not keyframes) ----------------- */
 
 /* CTA arrow nudge on hover */
 .cta-arrow { transition: transform 0.25s ease; }
@@ -230,7 +237,7 @@
   transform: translateY(-3px) rotate(-0.4deg);
 }
 
-/* Scroll-reveal (driven by IntersectionObserver hook) */
+/* --- Scroll-reveal (driven by IntersectionObserver hook) ------------------- */
 .reveal {
   opacity: 0;
   transform: translateY(24px);
@@ -243,24 +250,12 @@
   transform: translateY(0);
 }
 
-/* Slow gradient drift for hero backdrop */
-@keyframes sp-aurora-drift {
-  0%   { transform: translate3d(-2%, 0, 0) scale(1.05); }
-  50%  { transform: translate3d(2%, -2%, 0) scale(1.08); }
-  100% { transform: translate3d(-2%, 0, 0) scale(1.05); }
-}
-.animate-aurora {
-  animation: sp-aurora-drift 18s ease-in-out infinite;
-}
-
-/* Honor reduced-motion */
+/* --- Honor reduced-motion -------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .animate-vessel-float,
-  .animate-route-dash,
-  .animate-beacon-pulse,
-  .animate-beacon-core,
   .animate-radar-sweep,
-  .animate-aurora {
+  .animate-radar-ping,
+  .animate-compass-needle,
+  .animate-compass-spin {
     animation: none !important;
   }
   .reveal {
